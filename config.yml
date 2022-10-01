@@ -1,0 +1,45 @@
+environment:
+  server_num: 9
+  device_num: 10
+  energy_th: 0.03
+  arrival_rate: 3
+
+network:
+  type: 'DNN'
+  hidden_size: [64, 128]
+  normal: 'bn'
+
+agent:
+  # greedy strategy rate in exploration, >0 and <1
+  explore_epsilon: 0.6
+  # discount coefficient in calculating returns, >0 and <1
+  discount: 0.99
+  update_ratio: 0.01
+  split_rate: [1., 1., 1., 0.5, 0.5, 0.5, 0.3, 0.3, 0.3]
+  buffer_size: 4000
+
+federated:
+  # -sequential: select the previous N parameters in order
+  # -random: randomly select N parameters for each device
+  # -static: randomly select N parameters for devices with different split rate
+  param_select: static
+  # -target: execute federated learning on target net
+  # -actor: execute federated learning on actor net
+  # -both: execute federated learning on both target and actor net
+  train_on_model: both
+  kl: True
+
+train:
+  # -federated: execute federated learning
+  # -nonfederated: not execute federated learning
+  train_model: federated
+  # cuda or cpu
+  device: "cuda"
+  max_test_epoch: 200
+  max_train_epoch: 2000
+  batch_size: 64
+  # Adam or SGD
+  optimizer: Adam
+  lr: 1.0e-3
+  replay_buffer: 8192
+  random_seed: 0
